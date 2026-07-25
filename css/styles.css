@@ -1,0 +1,738 @@
+/* ==========================================================================
+   SALES CAPTAIN DASHBOARD — Clean, minimal, card-based
+   Pure HTML + CSS. No frameworks. Real data parsed from the source workbook.
+   ========================================================================== */
+
+:root {
+  --bg-page: #F6F7F9;
+  --bg-card: #FFFFFF;
+  --border-subtle: #E7E9EE;
+  --border-strong: #D8DCE3;
+
+  --text-primary: #14171F;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+
+  --blue-600: #3762F1;
+  --blue-700: #2748C4;
+  --blue-50: #EEF2FF;
+
+  --green-600: #128A5E;
+  --green-50: #EAFBF3;
+  --red-600: #D0342C;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 4px 16px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 8px 28px rgba(16, 24, 40, 0.09);
+
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 7px;
+
+  --font-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  font-family: var(--font-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   TOP BAR
+   ========================================================================== */
+
+.topbar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar__mark {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--blue-600) 0%, #6B8AFD 100%);
+  flex-shrink: 0;
+}
+
+.topbar__title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.topbar__badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue-700);
+  background: var(--blue-50);
+  padding: 2px 8px;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+
+.topbar__search {
+  width: 240px;
+  max-width: 40vw;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  font-family: var(--font-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.topbar__search:focus {
+  outline: none;
+  border-color: var(--blue-600);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px var(--blue-50);
+}
+
+.topbar__search::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   APP BODY / LAYOUT
+   ========================================================================== */
+
+.app__body {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 28px 60px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ==========================================================================
+   PRIMARY SECTION SWITCH — Branch Overview vs Team Detail
+   ========================================================================== */
+
+.section-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.primary-tabs {
+  display: flex;
+  gap: 8px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 20px auto 0 auto;
+  padding: 0 28px;
+}
+
+.primary-tab {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.primary-tab:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+#section-overview:checked ~ .primary-tabs label[for="section-overview"],
+#section-detail:checked ~ .primary-tabs label[for="section-detail"] {
+  background: var(--blue-600);
+  border-color: var(--blue-600);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.primary-panel {
+  display: none;
+}
+
+#section-overview:checked ~ #view-overview,
+#section-detail:checked ~ #view-detail {
+  display: flex;
+}
+
+/* ---- Static (non-tabbed) card header, used on Branch Overview ---- */
+
+.table-card__header--static {
+  justify-content: flex-start;
+}
+
+.table-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sync-status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-left: auto;
+}
+
+.sync-status--error {
+  color: var(--red-600);
+}
+
+.kpi-row--six {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .kpi-row--six {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .kpi-row--six {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .primary-tabs {
+    padding: 0 16px;
+  }
+}
+
+/* ==========================================================================
+   KPI CARDS
+   ========================================================================== */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.kpi-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.kpi-card__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-card__value {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   TABLE CARD
+   ========================================================================== */
+
+.table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ---- Tabs (CSS-only, driven by hidden radio inputs) ---- */
+
+.breakdown-toggle,
+.tab-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-page);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+}
+
+.tab-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.tab-label:hover {
+  color: var(--text-primary);
+}
+
+#tab-overview:checked ~ .table-card__header label[for="tab-overview"] { background: var(--bg-card); color: var(--blue-700); box-shadow: var(--shadow-sm); }
+#tab-dungun:checked ~ .table-card__header label[for="tab-dungun"] { background: var(--bg-card); color: var(--blue-700); box-shadow: var(--shadow-sm); }
+#tab-kn:checked ~ .table-card__header label[for="tab-kn"] { background: var(--bg-card); color: var(--blue-700); box-shadow: var(--shadow-sm); }
+#tab-jt:checked ~ .table-card__header label[for="tab-jt"] { background: var(--bg-card); color: var(--blue-700); box-shadow: var(--shadow-sm); }
+#tab-jk:checked ~ .table-card__header label[for="tab-jk"] { background: var(--bg-card); color: var(--blue-700); box-shadow: var(--shadow-sm); }
+#tab-nev:checked ~ .table-card__header label[for="tab-nev"] { background: var(--bg-card); color: var(--blue-700); box-shadow: var(--shadow-sm); }
+
+/* ---- Breakdown toggle switch ---- */
+
+.breakdown-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.breakdown-toggle-switch {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  background: var(--border-strong);
+  border-radius: 100px;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.breakdown-toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease;
+}
+
+.breakdown-toggle:checked ~ .table-card__header .breakdown-toggle-switch {
+  background: var(--blue-600);
+}
+
+.breakdown-toggle:checked ~ .table-card__header .breakdown-toggle-switch::after {
+  transform: translateX(14px);
+}
+
+/* ---- Tab panels ---- */
+
+.tab-panel {
+  display: none;
+}
+
+#tab-overview:checked ~ .tab-panels #panel-overview,
+#tab-dungun:checked ~ .tab-panels #panel-dungun,
+#tab-kn:checked ~ .tab-panels #panel-kn,
+#tab-jt:checked ~ .tab-panels #panel-jt,
+#tab-jk:checked ~ .tab-panels #panel-jk,
+#tab-nev:checked ~ .tab-panels #panel-nev {
+  display: block;
+}
+
+/* ==========================================================================
+   PERFORMANCE TABLE
+   ========================================================================== */
+
+.table-scroll {
+  overflow: auto;
+  max-height: 65vh;
+  /* Keeps the horizontal scrollbar always visible at the bottom of the
+     visible viewport, and independent from vertical row scrolling —
+     matches the Excel / Google Sheets / Airtable scrolling pattern. */
+}
+
+/* Firefox: keep both scrollbars slim but always present */
+.table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+/* WebKit/Chromium: slim, always-visible scrollbars rather than
+   overlay-only ones, so the horizontal bar is easy to grab */
+.table-scroll::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 100px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+.perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  font-size: 13px;
+}
+
+.perf-table thead th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  background: var(--bg-card);
+}
+
+.perf-table__group-row th {
+  border-bottom: none;
+  padding-bottom: 0;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.perf-table th.num,
+.perf-table td.num {
+  text-align: right;
+}
+
+.perf-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+.perf-table tbody tr:hover {
+  background: var(--bg-page);
+}
+
+.perf-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cell-name {
+  font-weight: 600;
+}
+
+/* ---- Divider between activity metrics (On Ground/Online/Live Session)
+   and outcome metrics (Prospect MTD onward) — Prospect MTD is always
+   the 8th column in the base Team Detail layout, so this targets it
+   by position rather than needing new classes on every row. ---- */
+.tab-panels .perf-table thead tr:not(.perf-table__group-row) th:nth-child(8),
+.tab-panels .perf-table tbody td:nth-child(8),
+.tab-panels .perf-table tfoot td:nth-child(8) {
+  border-left: 2px solid #D9E2F2;
+}
+
+/* ---- Detail (breakdown) columns — hidden by default ---- */
+
+.detail-col {
+  display: none;
+}
+
+.breakdown-toggle:checked ~ .tab-panels .detail-col {
+  display: table-cell;
+}
+
+.detail-col-group {
+  text-align: center;
+  background: var(--blue-50);
+  color: var(--blue-700);
+}
+
+/* ==========================================================================
+   BREAKDOWN GROUP COLOR SYSTEM
+   Each "Breakdown" group (On Ground / Online / Live / Prospect / Booking /
+   Submission / Register) gets a distinct soft color on its group header,
+   plus a stronger divider border marking where the group starts — so the
+   table reads as several small sections rather than one continuous block.
+   ========================================================================== */
+
+:root {
+  --dg-onground-bg: #EAF2FF;    --dg-onground-text: #1D4ED8;    --dg-onground-border: #93C5FD;
+  --dg-online-bg: #F3EAFE;      --dg-online-text: #7C3AED;      --dg-online-border: #C4B5FD;
+  --dg-live-bg: #EAFBF0;        --dg-live-text: #15803D;        --dg-live-border: #86EFAC;
+  --dg-prospek-bg: #FFF4E5;     --dg-prospek-text: #C2650A;     --dg-prospek-border: #FDBA74;
+  --dg-booking-bg: #FDECEC;     --dg-booking-text: #B91C1C;     --dg-booking-border: #FCA5A5;
+  --dg-submission-bg: #E6FBF8;  --dg-submission-text: #0F766E;  --dg-submission-border: #5EEAD4;
+  --dg-register-bg: #F3F4F6;    --dg-register-text: #4B5563;    --dg-register-border: #D1D5DB;
+}
+
+/* Group headers — soft colored background + matching darker text */
+.perf-table thead th.detail-col-group.dg-onground    { background: var(--dg-onground-bg);    color: var(--dg-onground-text); }
+.perf-table thead th.detail-col-group.dg-online      { background: var(--dg-online-bg);      color: var(--dg-online-text); }
+.perf-table thead th.detail-col-group.dg-live        { background: var(--dg-live-bg);        color: var(--dg-live-text); }
+.perf-table thead th.detail-col-group.dg-prospek     { background: var(--dg-prospek-bg);     color: var(--dg-prospek-text); }
+.perf-table thead th.detail-col-group.dg-booking     { background: var(--dg-booking-bg);     color: var(--dg-booking-text); }
+.perf-table thead th.detail-col-group.dg-submission  { background: var(--dg-submission-bg);  color: var(--dg-submission-text); }
+.perf-table thead th.detail-col-group.dg-register    { background: var(--dg-register-bg);    color: var(--dg-register-text); }
+
+/* Sub-headers (SAGA / PERS / S70 etc.) stay neutral white — only the
+   divider border at the start of each group hints at the color above */
+.perf-table thead tr:not(.perf-table__group-row) th.detail-col {
+  background: var(--bg-card);
+  font-weight: 600;
+}
+
+/* Strong divider (3px) at the start of every group — header, sub-header,
+   and every body/total row — so the boundary is visible while scrolling
+   horizontally, without needing to see the colored header at the same time */
+.dg-onground-first    { border-left: 3px solid var(--dg-onground-border) !important;    padding-left: 18px !important; }
+.dg-online-first      { border-left: 3px solid var(--dg-online-border) !important;      padding-left: 18px !important; }
+.dg-live-first         { border-left: 3px solid var(--dg-live-border) !important;        padding-left: 18px !important; }
+.dg-prospek-first     { border-left: 3px solid var(--dg-prospek-border) !important;     padding-left: 18px !important; }
+.dg-booking-first     { border-left: 3px solid var(--dg-booking-border) !important;     padding-left: 18px !important; }
+.dg-submission-first  { border-left: 3px solid var(--dg-submission-border) !important;  padding-left: 18px !important; }
+.dg-register-first    { border-left: 3px solid var(--dg-register-border) !important;    padding-left: 18px !important; }
+
+/* ---- Zebra striping on data rows (all columns, base + breakdown alike) ---- */
+
+.perf-table tbody tr:nth-child(odd) td {
+  background: #FFFFFF;
+}
+
+.perf-table tbody tr:nth-child(even) td {
+  background: #FAFAFA;
+}
+
+.perf-table tbody tr:hover td {
+  background: var(--bg-page);
+}
+
+/* ==========================================================================
+   KPI SCORECARD — standalone card, separate from the Team Detail table.
+   Shows the TARGET value (not the actual figure already shown above),
+   colored by whether the SA met it. Own scroll container, own visual
+   identity — meant to read like a scorecard, not another spreadsheet.
+   ========================================================================== */
+
+.kpi-scorecard-card {
+  margin-top: 28px;
+  border-left: 3px solid #D9E2F2;
+}
+
+.kpi-scorecard-subtitle {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.kpi-scorecard-scroll {
+  max-height: 50vh;
+}
+
+.kpi-scorecard-table {
+  min-width: 700px;
+}
+
+.kpi-scorecard-table th.week-group--active {
+  background: #EEF2FF;
+  color: #3730A3;
+}
+
+.kpi-scorecard-table th.week-group--placeholder {
+  background: var(--bg-page);
+  color: var(--text-tertiary);
+  border-bottom: 1px dashed var(--border-strong);
+  font-weight: 600;
+}
+
+.kpi-scorecard-table th.week-subheader--active {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+
+.kpi-scorecard-table th.week-subheader--placeholder {
+  background: var(--bg-page);
+  color: var(--text-tertiary);
+}
+
+/* Scorecard cells read as small badges/chips rather than plain grid
+   cells — reinforces the "scorecard, not spreadsheet" feel */
+.kpi-scorecard-table td.kpi-cell {
+  text-align: center;
+  padding: 12px 14px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.kpi-pass {
+  background: #EAFBF1;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+  border-radius: var(--radius-sm);
+}
+
+.kpi-fail {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-sm);
+}
+
+.kpi-neutral {
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.kpi-placeholder {
+  background: var(--bg-page);
+  font-style: italic;
+}
+
+.kpi-scorecard-table tbody tr:nth-child(odd) td:not(.kpi-pass):not(.kpi-fail) {
+  background: #FFFFFF;
+}
+
+.kpi-scorecard-table tbody tr:nth-child(even) td:not(.kpi-pass):not(.kpi-fail) {
+  background: #FAFAFA;
+}
+
+.kpi-scorecard-table tbody tr:hover td:not(.kpi-pass):not(.kpi-fail) {
+  background: var(--bg-page);
+}
+
+/* ---- Sticky header — both header rows stay visible while scrolling
+   vertically within the bounded .table-scroll container ---- */
+
+.perf-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+/* ---- Total row ---- */
+
+.row--total td {
+  font-weight: 700;
+  background: var(--blue-50);
+  border-bottom: none;
+  border-top: 1px solid var(--border-strong);
+}
+
+/* ---- Badges ---- */
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.badge--yes {
+  background: var(--green-50);
+  color: var(--green-600);
+}
+
+.badge--no {
+  background: #F3F4F6;
+  color: var(--text-tertiary);
+}
+
+.badge--muted {
+  background: #F3F4F6;
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .kpi-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 12px 16px;
+  }
+
+  .topbar__search {
+    width: 140px;
+  }
+
+  .app__body {
+    padding: 18px 16px 40px 16px;
+  }
+
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .table-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
