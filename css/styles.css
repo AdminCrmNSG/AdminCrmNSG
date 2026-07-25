@@ -610,12 +610,14 @@ body {
   padding-left: 14px !important;
 }
 
-/* Divider at the START of each week group (Week 2, 3, 4) — i.e. between
-   weeks, not between the metrics inside a week */
-.kpi-scorecard-table th.week-group--placeholder {
-  border-left: 2px solid #D9E2F2;
-}
-
+/* Single divider source per week boundary — runs continuously from the
+   week header (row1), through the subheader (row2), through every body
+   and total row. Header cells are targeted by their position within
+   row1 (name, week1, week2, week3, week4 = 5 th's), since colspan means
+   they don't share column indices with row2/body's nth-child positions. */
+.kpi-scorecard-table thead tr.perf-table__group-row th:nth-child(3),
+.kpi-scorecard-table thead tr.perf-table__group-row th:nth-child(4),
+.kpi-scorecard-table thead tr.perf-table__group-row th:nth-child(5),
 .kpi-scorecard-table thead tr:not(.perf-table__group-row) th:nth-child(6),
 .kpi-scorecard-table thead tr:not(.perf-table__group-row) th:nth-child(10),
 .kpi-scorecard-table thead tr:not(.perf-table__group-row) th:nth-child(14),
