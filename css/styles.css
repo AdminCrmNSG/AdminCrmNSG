@@ -597,6 +597,8 @@ body {
 .kpi-scorecard-table th.week-group--active {
   background: #EEF2FF;
   color: #3730A3;
+  text-align: left !important;
+  padding-left: 14px !important;
 }
 
 .kpi-scorecard-table th.week-group--placeholder {
@@ -604,6 +606,8 @@ body {
   color: var(--text-tertiary);
   border-bottom: 1px dashed var(--border-strong);
   font-weight: 600;
+  text-align: left !important;
+  padding-left: 14px !important;
 }
 
 /* Divider at the START of each week group (Week 2, 3, 4) — i.e. between
@@ -629,6 +633,12 @@ body {
 .kpi-scorecard-table th.week-subheader--placeholder {
   background: var(--bg-page);
   color: var(--text-tertiary);
+}
+
+.kpi-scorecard-table th.week-subheader,
+.kpi-scorecard-table td.kpi-cell {
+  width: 76px;
+  min-width: 76px;
 }
 
 /* Scorecard cells read as small badges/chips rather than plain grid
