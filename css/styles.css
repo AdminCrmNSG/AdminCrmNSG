@@ -653,17 +653,17 @@ body {
 }
 
 .kpi-pass {
-  background: #EAFBF1;
-  color: #166534;
-  border: 1px solid #BBF7D0;
-  border-radius: var(--radius-sm);
+  background: #E8F8EE !important;
+  color: #1F2937;
+  border: none;
+  border-radius: 0;
 }
 
 .kpi-fail {
-  background: #FEF2F2;
-  color: #B91C1C;
-  border: 1px solid #FECACA;
-  border-radius: var(--radius-sm);
+  background: #FDECEC !important;
+  color: #1F2937;
+  border: none;
+  border-radius: 0;
 }
 
 .kpi-neutral {
