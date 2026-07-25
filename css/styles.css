@@ -487,9 +487,9 @@ body {
    and outcome metrics (Prospect MTD onward) — Prospect MTD is always
    the 8th column in the base Team Detail layout, so this targets it
    by position rather than needing new classes on every row. ---- */
-.tab-panels .perf-table thead tr:not(.perf-table__group-row) th:nth-child(8),
-.tab-panels .perf-table tbody td:nth-child(8),
-.tab-panels .perf-table tfoot td:nth-child(8) {
+.tab-panels .perf-table:not(.kpi-scorecard-table) thead tr:not(.perf-table__group-row) th:nth-child(8),
+.tab-panels .perf-table:not(.kpi-scorecard-table) tbody td:nth-child(8),
+.tab-panels .perf-table:not(.kpi-scorecard-table) tfoot td:nth-child(8) {
   border-left: 2px solid #D9E2F2;
 }
 
@@ -604,6 +604,21 @@ body {
   color: var(--text-tertiary);
   border-bottom: 1px dashed var(--border-strong);
   font-weight: 600;
+}
+
+/* Divider at the START of each week group (Week 2, 3, 4) — i.e. between
+   weeks, not between the metrics inside a week */
+.kpi-scorecard-table th.week-group--placeholder {
+  border-left: 2px solid #D9E2F2;
+}
+
+.kpi-scorecard-table thead tr:not(.perf-table__group-row) th:nth-child(6),
+.kpi-scorecard-table thead tr:not(.perf-table__group-row) th:nth-child(10),
+.kpi-scorecard-table thead tr:not(.perf-table__group-row) th:nth-child(14),
+.kpi-scorecard-table tbody td:nth-child(6),
+.kpi-scorecard-table tbody td:nth-child(10),
+.kpi-scorecard-table tbody td:nth-child(14) {
+  border-left: 2px solid #D9E2F2;
 }
 
 .kpi-scorecard-table th.week-subheader--active {
